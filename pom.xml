@@ -6,7 +6,7 @@
     <groupId>com.ceh.mybatis-generator</groupId>
     <artifactId>mybatis-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>mybatis-generator</name>
     <description>Demo project for Spring Boot</description>
