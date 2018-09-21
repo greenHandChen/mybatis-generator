@@ -15,3 +15,6 @@ cux:
 
 server:
   port: 9111
+
+logging:
+  config: classpath:logback-spring-ceh.xml
