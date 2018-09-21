@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：命名空间，用于隔离sql -->
+<mapper namespace="com.ceh.mybatis.generator.dao.UserDao">
+
+    <select id="getUserById" parameterType="java.lang.Integer" resultType="com.ceh.mybatis.generator.domain.User">
+        select t.* from user t where t.id = #{id};
+    </select>
+</mapper>

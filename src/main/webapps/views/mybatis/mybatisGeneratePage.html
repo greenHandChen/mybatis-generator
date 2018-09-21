@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>生成界面</title>
+    <link href="/resources/boostrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="/resources/boostrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+    <link href="/resources/boostrapTable/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/resources/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="/resources/boostrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/resources/boostrapTable/bootstrap-table.min.js" type="text/javascript"></script>
+    <script src="/resources/boostrapTable/bootstrap-table-locale-all.min.js " type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var tableInfoList = [];
+            var generateTable = {};
+            $.ajax({
+                url: 'http://localhost:8080/api/getAllnInfos',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    tableInfoList = data;
+                    data.forEach(function (tableInfo) {
+                        var $li = '<li><a href="#" class="cux-get-tableName" id=\"' + tableInfo.tableName + '\">' + tableInfo.tableName + '</a></li>';
+                        $('#cux-dropdown-btn').append($li);
+                    });
+                }
+            });
+
+            $('#dropdownMenu2').on('hidden.bs.dropdown', function (e) {
+                $('.cux-get-tableName').off('click');
+            });
+
+            $('#dropdownMenu2').on('show.bs.dropdown', function (e) {
+                $('.cux-get-tableName').on('click', function (e1) {
+                    var $tableInfo = $(e1.target);
+                    $('#dropdownMenu1').text($tableInfo.attr('id'));
+                    $('.generation-td').remove();
+                    tableInfoList.forEach(function (tableInfo) {
+                        if (tableInfo.tableName === $tableInfo.attr('id')) {
+                            generateTable = tableInfo;
+                            tableInfo.fieldInfos.forEach(function (fieldInfo) {
+                                var fieldDbType = fieldInfo.fieldDbType == null ? '' : fieldInfo.fieldDbType;
+                                var javaType = fieldInfo.javaType == null ? '' : fieldInfo.javaType;
+                                var fieldName = fieldInfo.fieldName == null ? '' : fieldInfo.fieldName;
+                                var comment = fieldInfo.comment == null ? '' : fieldInfo.comment;
+                                var $td = '<td class="generation-td" style="text-align: center;max-width: 5%"><input type="checkbox"/></td>' +
+                                    '<td class="generation-td" style="max-width: 20%">' + fieldDbType + '</td>' +
+                                    '<td class="generation-td" style="max-width: 20%">' + javaType + '</td>' +
+                                    '<td class="generation-td" style="max-width: 20%">' + fieldName + '</td>' +
+                                    '<td class="generation-td" style="max-width: 35%">' + comment + '</td>';
+                                $('#field-table').append('<tr>' + $td + '</tr>');
+                                $('.generation-td').on('click');
+                            });
+                        }
+                    });
+                });
+            });
+
+            $('#generator-btn').on('click', function () {
+                console.log(generateTable);
+                $.ajax({
+                    url: 'http://localhost:8080/api/generateCode',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(generateTable),
+                    success: function (data) {
+
+                    }
+                });
+            })
+        });
+    </script>
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        mybatis代码生成器
+    </div>
+    <div class="panel-body">
+        <div class="dropdown clearfix" id="dropdownMenu2">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+                请选择表名
+                <span class="caret"></span>
+            </button>
+            <button id="generator-btn" class="btn btn-default" type="button" style="float: right">点击生成</button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="cux-dropdown-btn"></ul>
+        </div>
+        <div style="margin-top: 10px;"/>
+        <table id="field-table" class="table table-hover table-striped table-bordered tableScroll">
+            <tr>
+                <th style="text-align: center;max-width: 5%">
+                    <input type="checkbox">
+                </th>
+                <th style="text-align: center;max-width: 20%">数据库类型</th>
+                <th style="text-align: center;max-width: 20%">Java类型</th>
+                <th style="text-align: center;max-width: 20%">字段名</th>
+                <th style="text-align: center;max-width: 35%">备注</th>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
