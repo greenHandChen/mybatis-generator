@@ -1,4 +1,4 @@
-package com.ceh.mybatis.mybatis.config;
+package com.ceh.mybatis.generator.config;
 
 import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
 import com.ceh.mybatis.generator.config.CuxMybatisConfiguration;
@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.util.List;
-
 /**
  * Created by enHui.Chen on 2018/6/25.
  */
