@@ -6,14 +6,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class MybatisGeneratorApplication extends SpringBootServletInitializer{
+public class MybatisGeneratorApplication {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder){
-		return builder.sources(MybatisGeneratorApplication.class);
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(MybatisGeneratorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MybatisGeneratorApplication.class, args);
+    }
 }
