@@ -16,14 +16,14 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addViewController("/goGeneration").setViewName("mybatisGeneratePage");
     }
 
-     /**
-       * @Author: enHui.Chen
-       * @Description: 静态资源映射
-       * @Data 2018/9/20
-       */
+    /**
+     * @Author: enHui.Chen
+     * @Description: 静态资源映射
+     * @Data 2018/9/20
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/resources");
+                .addResourceLocations("classpath:/static");
     }
 }

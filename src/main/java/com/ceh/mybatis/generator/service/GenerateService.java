@@ -70,14 +70,26 @@ public class GenerateService {
             e.printStackTrace();
         } finally {
             try {
-                if (resultSet != null) resultSet.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (pstmt != null) pstmt.close();
+                    if (pstmt != null) {
+                        pstmt.close();
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        try {
+                            connection.close();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
