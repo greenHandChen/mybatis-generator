@@ -14,7 +14,7 @@
             var tableInfoList = [];
             var generateTable = {};
             $.ajax({
-                url: 'http://localhost:9111/api/getAllnInfos',
+                url: 'http://192.168.138.132:9111/api/getAllnInfos',
                 type: 'GET',
                 dataType: 'json',
                 contentType: 'application/json',
@@ -60,7 +60,7 @@
             $('#generator-btn').on('click', function () {
                 console.log(generateTable);
                 $.ajax({
-                    url: 'http://localhost:9111/api/generateCode',
+                    url: 'http://192.168.138.132:9111/api/generateCode',
                     type: 'POST',
                     dataType: 'json',
                     contentType: 'application/json',
