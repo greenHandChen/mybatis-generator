@@ -62,9 +62,9 @@ public class ConfigBuilder {
         String key = resultSet.getString("Key");
         if (key != null && !"".equals(key)) {
             if ("PRI".equals(key)) {
-                fieldInfo.setIsIdentity(true);
+                fieldInfo.setIdentity(true);
             } else {
-                fieldInfo.setIsIdentity(false);
+                fieldInfo.setIdentity(false);
             }
         }
     }
