@@ -32,6 +32,9 @@ public class GenerateService {
     private DataSource dataSource;
 
     @Autowired
+    private ConfigBuilder configBuilder;
+
+    @Autowired
     @Qualifier(value = "cuxfreemakerConfiguration")
     private Configuration configuration;
 
@@ -97,22 +100,21 @@ public class GenerateService {
     }
 
     public void getTableInfos(Connection connection, PreparedStatement pstmt, ResultSet resultSet, List<TableInfo> tableInfos) throws SQLException {
-        String sql = "show table status";
-        pstmt = connection.prepareStatement(sql);
+        String tableSql = configBuilder.getDbType().getTableSql();
+        pstmt = connection.prepareStatement(tableSql);
         resultSet = pstmt.executeQuery();
-        ConfigBuilder configBuilder = new ConfigBuilder();
         while (resultSet.next()) {
             TableInfo tableInfo = new TableInfo();
             configBuilder.processTableInfo(tableInfo, resultSet);
-            getFiledInfos(connection, pstmt, resultSet, configBuilder, tableInfo);
+            getFiledInfos(connection, pstmt, resultSet, tableInfo);
             tableInfos.add(tableInfo);
         }
         configBuilder.setTableInfos(tableInfos);
     }
 
-    public void getFiledInfos(Connection connection, PreparedStatement pstmt, ResultSet resultSet, ConfigBuilder configBuilder, TableInfo tableInfo) throws SQLException {
-        String sql = String.format("show full fields from %s", tableInfo.getTableName());
-        pstmt = connection.prepareStatement(sql);
+    public void getFiledInfos(Connection connection, PreparedStatement pstmt, ResultSet resultSet, TableInfo tableInfo) throws SQLException {
+        String fieldsSql = String.format(configBuilder.getDbType().getFieldsSql(), tableInfo.getTableName());
+        pstmt = connection.prepareStatement(fieldsSql);
         resultSet = pstmt.executeQuery();
         List<FieldInfo> fieldInfos = new ArrayList<>();
         while (resultSet.next()) {
@@ -122,4 +124,6 @@ public class GenerateService {
         }
         tableInfo.setFieldInfos(fieldInfos);
     }
+
+
 }

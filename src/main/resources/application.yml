@@ -9,6 +9,7 @@ spring:
 
 cux:
   mybatis:
+    dbType: mysql
     mapper-locations: classpath:mybatis/mapper/*.xml # nameSpace必须与mapper的接口名一致
     configuration:
       mapUnderscoreToCamelCase: true

@@ -43,6 +43,9 @@ public class TableInfo {
     // xmlName
     private String xmlName;
 
+    //pkgName
+    private String pkgName;
+
     @Override
     public String toString() {
         return "TableInfo{" +
@@ -57,6 +60,7 @@ public class TableInfo {
                 ", serviceName='" + serviceName + '\'' +
                 ", mapperName='" + mapperName + '\'' +
                 ", xmlName='" + xmlName + '\'' +
+                ", pkgName='" + pkgName + '\'' +
                 '}';
     }
 }

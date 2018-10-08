@@ -2,12 +2,18 @@ package com.ceh.mybatis.generator.config;
 
 import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
 import com.ceh.mybatis.generator.config.CuxMybatisConfiguration;
+import com.ceh.mybatis.generator.config.builder.ConfigBuilder;
+import com.ceh.mybatis.generator.config.convert.DbTypeConvert;
+import com.ceh.mybatis.generator.config.convert.MysqlDbTypeConvert;
+import com.ceh.mybatis.generator.config.convert.OracleDbTypeConvert;
+import com.ceh.mybatis.generator.config.rules.DbType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -18,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.util.List;
+
 /**
  * Created by enHui.Chen on 2018/6/25.
  */
@@ -26,12 +33,15 @@ import java.util.List;
 @Configuration
 @EnableTransactionManagement
 @MapperScan(basePackages = MybatisConfiguration.BASEPACKAGE)
-public class MybatisConfiguration implements InitializingBean{
+public class MybatisConfiguration implements InitializingBean {
 
     public static final String BASEPACKAGE = "com.ceh.mybatis.generator";
 
+    @Autowired
+    private CuxMybatisConfiguration cuxMybatisConfiguration;
+
     @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, CuxMybatisConfiguration cuxMybatisConfiguration) throws Exception {
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         // 配置springboot对mybatis的bean扫描的类
@@ -63,6 +73,21 @@ public class MybatisConfiguration implements InitializingBean{
         sqlSessionFactoryBean.setConfiguration(cuxMybatisConfiguration.getConfiguration());
 
         return sqlSessionFactoryBean.getObject();
+    }
+
+    @Bean
+    public ConfigBuilder configBuilder() {
+        ConfigBuilder configBuilder = new ConfigBuilder();
+        DbType dbType = DbType.parseDbType(cuxMybatisConfiguration.getDbType());
+        configBuilder.setDbType(dbType);
+        DbTypeConvert dbTypeConvert = null;
+        if (dbType == DbType.MYSQL) {
+            dbTypeConvert = new MysqlDbTypeConvert();
+        } else if (dbType == DbType.ORACLE) {
+            dbTypeConvert = new OracleDbTypeConvert();
+        }
+        configBuilder.setDbTypeConvert(dbTypeConvert);
+        return configBuilder;
     }
 
     @Override

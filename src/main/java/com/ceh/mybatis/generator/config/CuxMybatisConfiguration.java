@@ -30,8 +30,10 @@ public class CuxMybatisConfiguration {
 
     private final List<MyInterceptor> myInterceptor = new ArrayList();
 
+    private String dbType;
+
     @Data
-    public static class MyInterceptor {
+    static class MyInterceptor {
 
         private String interceptor;
 

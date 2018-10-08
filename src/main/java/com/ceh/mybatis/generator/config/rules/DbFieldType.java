@@ -17,7 +17,7 @@ public enum DbFieldType {
     // 包装类型
     BYTE("Byte", "java.lang.Byte"),
     SHORT("Short", "java.lang.Short"),
-    INT("Integer", "java.lang.Integer"),
+    INTEGER("Integer", "java.lang.Integer"),
     LONG("Long", "java.lang.Integer"),
     CHAR("Char", "java.lang.Char"),
     BOOLEAN("Boolean", "java.lang.Boolean"),
@@ -28,7 +28,10 @@ public enum DbFieldType {
     STRING("String", "java.lang.String"),
 
     // 日期类型
-    DATE("Date", "java.util.Date");
+    DATE("Date", "java.util.Date"),
+
+    // 其他
+    BIGDECIMAL("BigDecimal", "java.math.BigDecimal");
 
     private String type;
     private String pkg;
