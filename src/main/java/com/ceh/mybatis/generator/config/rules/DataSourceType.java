@@ -1,4 +1,4 @@
-package com.ceh.mybatis.generator.annotation;
+package com.ceh.mybatis.generator.config.rules;
 
 /**
  * Created by enHui.Chen on 2018/9/17.

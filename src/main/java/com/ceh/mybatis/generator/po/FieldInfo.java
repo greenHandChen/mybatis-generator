@@ -27,6 +27,9 @@ public class FieldInfo {
     // 字段类型信息
     private DbFieldType dbFieldType;
 
+    // 字段类型展示
+    private String viewPkg;
+
     @Override
     public String toString() {
         return "FieldInfo{" +

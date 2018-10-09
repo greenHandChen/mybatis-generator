@@ -15,7 +15,7 @@
             var tableInfoList = [];
             var generateTable = {};
             $.ajax({
-                url: 'http://192.168.138.132:9111/api/getAllnInfos',
+                url: 'http://localhost:9111/api/getAllnInfos',
                 type: 'GET',
                 dataType: 'json',
                 contentType: 'application/json',
@@ -42,7 +42,7 @@
                             generateTable = tableInfo;
                             tableInfo.fieldInfos.forEach(function (fieldInfo) {
                                 var fieldDbType = fieldInfo.fieldDbType == null ? '' : fieldInfo.fieldDbType;
-                                var javaType = fieldInfo.javaType == null ? '' : fieldInfo.javaType;
+                                var javaType = fieldInfo.viewPkg == null ? '' : fieldInfo.viewPkg;
                                 var fieldName = fieldInfo.fieldName == null ? '' : fieldInfo.fieldName;
                                 var comment = fieldInfo.comment == null ? '' : fieldInfo.comment;
                                 var $td = '<td class="generation-td" style="text-align: center;max-width: 5%"><input type="checkbox"/></td>' +
@@ -61,7 +61,7 @@
             $('#generator-btn').on('click', function () {
                 console.log(generateTable);
                 $.ajax({
-                    url: 'http://192.168.138.132:9111/api/generateCode',
+                    url: 'http://localhost:9111/api/generateCode',
                     type: 'POST',
                     dataType: 'json',
                     contentType: 'application/json',

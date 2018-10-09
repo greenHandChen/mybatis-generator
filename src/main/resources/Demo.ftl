@@ -2,14 +2,16 @@
 package ${pkgName};
 </#if>
 
-<#list fieldsInfos as fieldInfo>
-import ${fieldInfo.dbFieldType.pkg}
+<#list fieldInfos as fieldInfo>
+import ${fieldInfo.dbFieldType.pkg};
 </#list>
 
-public class ${tableName}{
+@Data
+public class ${tableName?cap_first}{
 
 <#list fieldInfos as fieldInfo>
-        private ${fieldInfo.type} ${fieldInfo.fieldName};
+        private ${fieldInfo.dbFieldType.type} ${fieldInfo.fieldName};
+
 </#list>
 
 }

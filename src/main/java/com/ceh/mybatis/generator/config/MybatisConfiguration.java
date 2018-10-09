@@ -1,12 +1,10 @@
 package com.ceh.mybatis.generator.config;
 
 import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
-import com.ceh.mybatis.generator.config.CuxMybatisConfiguration;
 import com.ceh.mybatis.generator.config.builder.ConfigBuilder;
-import com.ceh.mybatis.generator.config.convert.DbTypeConvert;
-import com.ceh.mybatis.generator.config.convert.MysqlDbTypeConvert;
-import com.ceh.mybatis.generator.config.convert.OracleDbTypeConvert;
+import com.ceh.mybatis.generator.config.convert.*;
 import com.ceh.mybatis.generator.config.rules.DbType;
+import com.ceh.mybatis.generator.config.rules.NamingRuleType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -87,6 +85,14 @@ public class MybatisConfiguration implements InitializingBean {
             dbTypeConvert = new OracleDbTypeConvert();
         }
         configBuilder.setDbTypeConvert(dbTypeConvert);
+        NamingRuleType namingRuleType = NamingRuleType.parseNamingRuleType(cuxMybatisConfiguration.getNamingRule());
+        NamingRuleConverter namingRuleConverter = null;
+        if (namingRuleType == NamingRuleType.CamelCase) {
+            namingRuleConverter = new MapUnderscore2CamelCase();
+        } else if (namingRuleType == NamingRuleType.MapUnderScore) {
+
+        }
+        configBuilder.setNamingRuleConverter(namingRuleConverter);
         return configBuilder;
     }
 

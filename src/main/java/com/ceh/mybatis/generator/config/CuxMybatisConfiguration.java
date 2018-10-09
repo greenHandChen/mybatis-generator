@@ -32,6 +32,8 @@ public class CuxMybatisConfiguration {
 
     private String dbType;
 
+    private String namingRule;
+
     @Data
     static class MyInterceptor {
 

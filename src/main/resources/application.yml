@@ -3,13 +3,14 @@ spring:
     name: mybatis_generator
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://172.23.4.32:3306/mybatis_test?useUnicode=true&characterEncoding=utf8&useSSL=true
+    url: jdbc:mysql://172.23.4.21:3306/mybatis_test?useUnicode=true&characterEncoding=utf8&useSSL=true
     username: root
     password: root
 
 cux:
   mybatis:
     dbType: mysql
+    namingRule: CamelCase
     mapper-locations: classpath:mybatis/mapper/*.xml # nameSpace必须与mapper的接口名一致
     configuration:
       mapUnderscoreToCamelCase: true

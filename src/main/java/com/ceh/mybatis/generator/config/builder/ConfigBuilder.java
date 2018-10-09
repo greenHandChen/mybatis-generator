@@ -1,6 +1,7 @@
 package com.ceh.mybatis.generator.config.builder;
 
 import com.ceh.mybatis.generator.config.convert.DbTypeConvert;
+import com.ceh.mybatis.generator.config.convert.NamingRuleConverter;
 import com.ceh.mybatis.generator.config.rules.DbType;
 import com.ceh.mybatis.generator.po.FieldInfo;
 import com.ceh.mybatis.generator.po.TableInfo;
@@ -19,6 +20,8 @@ public class ConfigBuilder {
     private List<TableInfo> tableInfos;
 
     private DbType dbType;
+
+    private NamingRuleConverter namingRuleConverter;
 
     private DbTypeConvert dbTypeConvert;
 
@@ -61,13 +64,15 @@ public class ConfigBuilder {
         String dbNull = resultSet.getString("Null");
         String comment = resultSet.getString("Comment");
         String key = resultSet.getString("Key");
+
         if (field != null && !"".equals(field)) {
-            fieldInfo.setFieldName(field);
+            fieldInfo.setFieldName(namingRuleConverter.fieldConvert(field));
         }
 
         if (type != null && !"".equals(type)) {
             fieldInfo.setFieldDbType(type);
             fieldInfo.setDbFieldType(dbTypeConvert.processDbType2JavaType(type));
+            fieldInfo.setViewPkg(fieldInfo.getDbFieldType().getPkg());
         }
 
         if (dbNull != null && !"".equals(dbNull)) {
