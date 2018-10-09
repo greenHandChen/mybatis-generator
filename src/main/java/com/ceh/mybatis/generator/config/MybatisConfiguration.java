@@ -33,7 +33,7 @@ import java.util.List;
 @MapperScan(basePackages = MybatisConfiguration.BASEPACKAGE)
 public class MybatisConfiguration implements InitializingBean {
 
-    public static final String BASEPACKAGE = "com.ceh.mybatis.generator";
+    public static final String BASEPACKAGE = "com.ceh.mybatis";
 
     @Autowired
     private CuxMybatisConfiguration cuxMybatisConfiguration;

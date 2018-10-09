@@ -60,6 +60,7 @@
 
             $('#generator-btn').on('click', function () {
                 console.log(generateTable);
+                generateTable.basePath = $('#base-path').val();
                 $.ajax({
                     url: 'http://localhost:9111/api/generateCode',
                     type: 'POST',
@@ -86,6 +87,10 @@
                 请选择表名
                 <span class="caret"></span>
             </button>
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">basePath</span>
+                <input id="base-path" type="text" class="form-control" placeholder="basePath" aria-describedby="basic-addon1">
+            </div>
             <button id="generator-btn" class="btn btn-default" type="button" style="float: right">点击生成</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="cux-dropdown-btn"></ul>
         </div>

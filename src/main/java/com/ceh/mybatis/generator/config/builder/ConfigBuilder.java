@@ -32,8 +32,11 @@ public class ConfigBuilder {
         String comment = resultSet.getString("Comment");
         Long rows = resultSet.getLong("Rows");
         Long autoIncrement = resultSet.getLong("Auto_Increment");
+
+        tableInfo.setPkgName("com.ceh.mybatis.test");
+
         if (tableName != null && !"".equals(tableName)) {
-            String processTableName = this.processTableName(tableName);
+            String processTableName = this.processCapFirst(tableName);
             tableInfo.setTableName(tableName);
             tableInfo.setControllerName(String.format("%sContoller", processTableName));
             tableInfo.setServiceName(String.format("%sService", processTableName));
@@ -92,7 +95,7 @@ public class ConfigBuilder {
         }
     }
 
-    public String processTableName(String tableName) {
+    public String processCapFirst(String tableName) {
         return new StringBuilder().append(tableName.substring(0, 1).toUpperCase()).append(tableName.substring(1)).toString();
     }
 }

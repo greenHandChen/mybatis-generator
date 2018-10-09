@@ -5,16 +5,16 @@ import com.ceh.mybatis.generator.po.FieldInfo;
 import com.ceh.mybatis.generator.po.TableInfo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import javafx.scene.control.Tab;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * Created by enHui.Chen on 2018/9/17.
  */
+@Slf4j
 @Service
 public class GenerateService {
 
@@ -41,18 +42,22 @@ public class GenerateService {
     public String generateCode(TableInfo tableInfo) {
         String classPath = this.getClass().getResource("/").getPath();
         String[] freeMakerPaths = new File(classPath).list();
-
         for (String freeMakerPath : freeMakerPaths) {
             if (freeMakerPath.endsWith(".ftl")) {
                 BufferedWriter bufferedWriter = null;
                 try {
                     Template template = configuration.getTemplate(freeMakerPath);
-                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("E:\\code\\" + "Demo.java"))));
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(processOutFile(tableInfo, freeMakerPath)))));
                     template.process(tableInfo, bufferedWriter);
                     bufferedWriter.flush();
-                    bufferedWriter.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    try {
+                        bufferedWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -125,5 +130,19 @@ public class GenerateService {
         tableInfo.setFieldInfos(fieldInfos);
     }
 
+    public String processOutFile(TableInfo tableInfo, String freeMakerPath) {
+        String basePath = tableInfo.getBasePath() + "\\";
+        if (freeMakerPath.endsWith(".xml.ftl")) {
+            basePath = "E:\\workspace\\mybatis-generator\\src\\main\\resources\\mybatis\\mapper\\";
+        } else {
+            String finalPath = freeMakerPath.replace("${generator}", "").replace(".java.ftl", "").toLowerCase();
+            basePath += "mapper".equals(finalPath) ? "dao" : "".equals(finalPath) ? "domain" : finalPath;
+        }
+        File dir = new File(basePath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return basePath + "\\" + freeMakerPath.replace("${generator}", configBuilder.processCapFirst(tableInfo.getTableName())).replace(".ftl", "");
+    }
 
 }

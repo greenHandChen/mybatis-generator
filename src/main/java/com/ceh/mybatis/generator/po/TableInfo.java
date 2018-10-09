@@ -2,6 +2,7 @@ package com.ceh.mybatis.generator.po;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +46,15 @@ public class TableInfo {
 
     //pkgName
     private String pkgName;
+
+    // 生成日期
+    private Date generatedTime = new Date();
+
+    // 生成人
+    private String generatedBy = "enhui.Chen";
+
+    // 生成基础路径
+    private String basePath = "C:\\Users\\Administrator\\Desktop\\";
 
     @Override
     public String toString() {
